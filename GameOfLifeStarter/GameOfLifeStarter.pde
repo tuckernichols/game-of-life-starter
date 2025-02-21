@@ -4,10 +4,10 @@ int[][] grid; // the 2D array to hold 0's and 1's
 
 void setup() {
   size(800, 600); // adjust accordingly, make sure it's a multiple of SPACING
-  noStroke(); // don't draw the edges of each cell
+  //noStroke(); // don't draw the edges of each cell
   frameRate(10); // controls speed of regeneration
-  grid = new int[height / SPACING][width / SPACING];
-
+  grid = new int[height / SPACING][width / SPACING];        // 40,30
+  populateGrid();
   // populate initial grid
   // your code here
 
@@ -23,7 +23,8 @@ int[][] calcNextGrid() {
 
   // your code here
 
-  return nextGrid;
+  //return nextGrid;
+  return grid;
 }
 
 int countNeighbors(int y, int x) {
@@ -35,8 +36,27 @@ int countNeighbors(int y, int x) {
   return n;
 }
 
+void populateGrid(){
+  for(int row = 0; row < grid.length; row++){
+     for(int col = 0; col < grid[row].length; col++){
+        if(Math.random() >= 0.9){        // 10% chance
+          grid[row][col] = 1;
+        }
+     }
+  } 
+}
+
 void showGrid() {
-  // your code here
+  for(int row = 0; row < grid.length; row++){
+     for(int col = 0; col < grid[row].length; col++){
+       if(grid[row][col] == 1){
+         fill(0,0,0);
+       } else {
+         fill(255,255,255);
+       }
+        square(col * SPACING, row * SPACING, SPACING);
+     }
+  }
   // use square() to represent each cell
   // use fill(r, g, b) to control color: black for empty, red for filled (or alive)
 }
