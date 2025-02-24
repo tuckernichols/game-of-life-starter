@@ -1,11 +1,11 @@
 final int SPACING = 20; // each cell's area //<>//
-final float DENSITY = 0.1; // how likely each cell is to be alive at the start
+final float DENSITY = 0.2; // how likely each cell is to be alive at the start
 int[][] grid; 
 
 void setup() {
   size(800, 600); // make sure it's a multiple of SPACING
   //noStroke(); // don't draw the edges of each cell
-  frameRate(10); // controls speed of regeneration
+  frameRate(7); // controls speed of regeneration
   grid = new int[height / SPACING + 2][width / SPACING + 2];        // 40,30 add to for border outside of veiw
   populateGrid();
 }
@@ -21,9 +21,13 @@ int[][] calcNextGrid() {
   for (int row = 1; row < grid.length - 1; row++) {
     for (int col = 1; col < grid[row].length - 1; col++) {
       neighbors = countNeighbors(row, col);
-
-      if (grid[row][col] == 1) {
-        nextGrid[row][col] = aliveOutcome(neighbors);
+      
+      if (grid[row][col] > 0) {
+        if(aliveOutcome(neighbors) == 1){
+          nextGrid[row][col] += grid[row][col] + 1;
+        } else {
+          nextGrid[row][col] = 0;
+        }
       } else {
         nextGrid[row][col] = deadOutcome(neighbors);
       }
@@ -31,19 +35,18 @@ int[][] calcNextGrid() {
   }
 
   return nextGrid;
-  //return grid;
 }
 
 int countNeighbors(int y, int x) {
-  int n = 0; // don't count yourself!
-  n += grid[y - 1][x-1];
-  n += grid[y][x-1];
-  n += grid[y + 1][x-1];      // left side
-  n += grid[y + 1][x];
-  n += grid[y - 1][x];     // in line
-  n += grid[y - 1][x +1];
-  n += grid[y][x +1];
-  n += grid[y + 1][x + 1];    // right side
+  int n = 0; 
+  if (grid[y - 1][x - 1] > 0) n += 1;  
+  if (grid[y][x - 1] > 0) n += 1;      // Left
+  if (grid[y + 1][x - 1] > 0) n += 1;  
+  if (grid[y + 1][x] > 0) n += 1;      // Bottom-middle
+  if (grid[y - 1][x] > 0) n += 1;      // Top-middle
+  if (grid[y - 1][x + 1] > 0) n += 1;  
+  if (grid[y][x + 1] > 0) n += 1;      // Right
+  if (grid[y + 1][x + 1] > 0) n += 1;  
   return n;
 }
 
@@ -72,11 +75,26 @@ void populateGrid() {
   }
 }
 
+int greenShade(int input){
+  double y = -125 * log10(input + 5) + 343;
+  if( y > 100){
+    return (int) y;
+  }
+  return 100;
+  }
+  
+float log10 (int x) {
+  return (log(x) / log(10));
+}
+
 void showGrid() {
+  int g;
   for (int row = 0; row < grid.length; row++) {
     for (int col = 0; col < grid[row].length; col++) {
-      if (grid[row][col] == 1) {    // 1 == black
-        fill(0, 0, 0);
+      if (grid[row][col] > 0) {    // 1 > alive
+        g = greenShade(grid[row][col]);
+        println("x: " + grid[row][col] + "  y: " + g);
+        fill(3, g, 111);
       } else {
         fill(255, 255, 255);
       }
