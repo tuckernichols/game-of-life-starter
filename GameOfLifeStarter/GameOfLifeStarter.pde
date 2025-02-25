@@ -1,4 +1,4 @@
-final int SPACING = 20;       // each cell's area //<>//
+final int SPACING = 20;       // each cell's area 
 final float DENSITY = 0.2;    // how likely each cell is to be alive at the start
 int[][] grid;
 
