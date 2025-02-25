@@ -17,7 +17,3 @@ For a space that is populated (1):
 For a space that is unpopulated (0):
 - Each cell with three neighbors becomes populated.
 - Otherwise, the cell remains unpopulated.
-
-Of course, checking indexes that are out-of-bounds will throw errors. You can get creative, but you may find that there is no "clean" solution to this. You'll end up with a bunch of if/else statements...
-
-### Good luck!
